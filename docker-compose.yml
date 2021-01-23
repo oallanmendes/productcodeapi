@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mongo-express:
+    image: mongo-express
+    container_name: mongoexpress-productcodeapi
+    depends_on:
+      - mongo
+    ports:
+      - "8081:8081"
+
+  mongo:
+    image: mongo
+    container_name: mongo-productcodeapi
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/MongoDB:/data/db
