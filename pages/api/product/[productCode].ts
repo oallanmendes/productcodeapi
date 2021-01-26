@@ -1,12 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { NextApiRequest, NextApiResponse } from "next";
 import scrappeCodeInfos from "../../../src/services/scrappeCodeInfos";
+import { InsertProduct, GetProduct } from "../../../src/services/productService";
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
     const { productCode } = request.query;
 
-    const product = await scrappeCodeInfos({productCode});
-
+    let product = await GetProduct(productCode);
+    if (!product) {
+        product = await scrappeCodeInfos({ productCode });
+        await InsertProduct(product);
+    }
     response.statusCode = 200
     return response.json(product)
 }
