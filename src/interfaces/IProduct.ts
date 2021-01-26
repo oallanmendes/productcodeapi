@@ -5,5 +5,5 @@ export default interface IProduct {
   source: string;
   manufacturer: string;
   manufacturerCatalog?: string;
-  img?: string;
+  imageUrl?: string;
 }

@@ -1,6 +1,7 @@
 import BlueSoft from "../api/bluesoft";
 import cheerio from 'cheerio';
 import IProduct from "../interfaces/IProduct";
+import uploadImageToImgur from "./uploadImageToImgur";
 
 export default async function scrappeCodeInfos({productCode}):Promise<IProduct>{
   const { data } = await BlueSoft.get(`/${productCode}`);
@@ -33,11 +34,14 @@ export default async function scrappeCodeInfos({productCode}):Promise<IProduct>{
 
     const manufacturerCatalog = `https://cosmos.bluesoft.com.br${manufacturerProducts}`
 
-    let img = selector("body")
+    let imageUrl = selector("body")
         .find('#product-gallery > div.thumbnail.product-thumbnail > img')
         .attr('src')
 
-    if (!img) img = ''
+    if ( imageUrl ) {
+        imageUrl = await uploadImageToImgur({name, productCode, url: imageUrl})
+        console.log(imageUrl);
+    }
 
     return {
       productCode,
@@ -46,6 +50,6 @@ export default async function scrappeCodeInfos({productCode}):Promise<IProduct>{
       source,
       manufacturer,
       manufacturerCatalog,
-      img,
+      imageUrl,
     }
 }
