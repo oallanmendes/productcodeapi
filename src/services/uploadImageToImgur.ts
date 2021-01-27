@@ -17,7 +17,7 @@ export default async function uploadImageToImgur({ url, name, productCode }: IUp
   form.append('type', 'url');
   form.append('name', `${productCode}_${name}`);
   form.append('title', name);
-  form.append('description', `Product image of code '${productCode}' from productcodeapi.`);
+  form.append('description', `Product image of code '${productCode}' from productcodeapi. Find more on www.productcodeapi.com.br/api/product/${productCode}`);
 
   const response = await imgurAPI.post(
     '/upload',

@@ -28,19 +28,12 @@ export default async function scrappeCodeInfos({productCode}):Promise<IProduct>{
         .text()
         .split('\n')[7]
 
-    const manufacturerProducts = selector("body")
-        .find('.owner-name > a')
-        .attr('href')
-
-    const manufacturerCatalog = `https://cosmos.bluesoft.com.br${manufacturerProducts}`
-
     let imageUrl = selector("body")
         .find('#product-gallery > div.thumbnail.product-thumbnail > img')
         .attr('src')
 
     if ( imageUrl ) {
         imageUrl = await uploadImageToImgur({name, productCode, url: imageUrl})
-        console.log(imageUrl);
     }
 
     return {
@@ -49,7 +42,6 @@ export default async function scrappeCodeInfos({productCode}):Promise<IProduct>{
       brand,
       source,
       manufacturer,
-      manufacturerCatalog,
       imageUrl,
     }
 }
