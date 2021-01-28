@@ -1,4 +1,4 @@
-import { connectToDatabase } from './mongodb';
+import { connectToDatabase } from './mongodb.js';
 
 export const Insert = async (collectionName, document) => {
     const { db } = await connectToDatabase()
