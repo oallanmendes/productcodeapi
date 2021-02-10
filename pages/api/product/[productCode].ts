@@ -6,6 +6,8 @@ import { InsertProduct, GetProduct } from "../../../src/services/productService"
 export default async (request: NextApiRequest, response: NextApiResponse) => {
     const { productCode } = request.query;
 
+    const date = Intl.DateTimeFormat('pt-Br', { dateStyle: 'full', timeStyle: 'long' }).format(new Date)
+
     let product = await GetProduct(String(productCode));
     if (!product) {
         product = await scrappeCodeInfos({ productCode });
@@ -13,6 +15,11 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         product = await GetProduct(String(productCode))
     }
 
+    response.setHeader('Cache-control', 's-maxage=10, stale-while-revalidate');
+
     response.statusCode = 200
-    return response.json( product )
+    return response.json({
+        product,
+        date,
+    })
 }
