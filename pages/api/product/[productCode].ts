@@ -6,7 +6,7 @@ import { InsertProduct, GetProduct } from "../../../src/services/productService"
 export default async (request: NextApiRequest, response: NextApiResponse) => {
     const { productCode } = request.query;
 
-    const date = Intl.DateTimeFormat('pt-Br', { dateStyle: 'full', timeStyle: 'long' }).format(new Date)
+    const date = new Date()
 
     let product = await GetProduct(String(productCode));
     if (!product) {
@@ -20,6 +20,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     response.statusCode = 200
     return response.json({
         product,
-        date,
+        date: date.toUTCString()
     })
 }
